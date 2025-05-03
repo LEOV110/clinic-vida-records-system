@@ -77,106 +77,118 @@ def matriz_identidad(n):
     return np.eye(n)
 
 def main():
-    print("Seleccione una propiedad a comprobar:")
-    print("1. Conmutativa de la suma (A + B = B + A)")
-    print("2. Asociativa de la suma (A + (B + C) = (A + B) + C)")
-    print("3. Distributiva de la multiplicación sobre la suma (A*(B + C) = A*B + A*C)")
-    print("4. Inversa de una matriz (A * A^-1 = I)")
-    print("5. Matriz identidad (I * A = A)")
-    print()
-    
-    opcion = input("Opción (1/2/3/4/5): ").strip()
-    aleatorio = input("¿Desea generar matrices aleatorias? (s/n): ").strip().lower() == "s"
-    
-    # Para las opciones 4 y 5 se necesita una matriz cuadrada
-    if opcion in ["4", "5"]:
-        while True:
-            try:
-                n = int(input("Ingrese la dimensión (n x n): "))
-                if n <= 0:
-                    print("La dimensión debe ser mayor que cero. Intente nuevamente.")
-                    continue
-                filas = n
-                columnas = n
-                break
-            except ValueError:
-                print("Entrada inválida. Ingrese un número entero.")
-    else:
-        while True:
-            try:
-                filas = int(input("Número de filas: "))
-                columnas = int(input("Número de columnas: "))
-                if filas <= 0 or columnas <= 0:
-                    print("Las dimensiones deben ser mayores que cero. Intente nuevamente.")
-                    continue
-                break
-            except ValueError:
-                print("Entrada inválida. Ingrese números enteros.")
-    
-    # Función auxiliar para obtener una matriz (aleatoria o por ingreso manual)
-    def get_matriz(nombre):
-        if aleatorio:
-            print(f"\nGenerando matriz {nombre} aleatoria:")
-            return generar_matriz(filas, columnas)
+    while True:
+        print("\nSeleccione una propiedad a comprobar:")
+        print("1. Conmutativa de la suma (A + B = B + A)")
+        print("2. Asociativa de la suma (A + (B + C) = (A + B) + C)")
+        print("3. Distributiva de la multiplicación sobre la suma (A*(B + C) = A*B + A*C)")
+        print("4. Inversa de una matriz (A * A^-1 = I)")
+        print("5. Matriz identidad (I * A = A)")
+        print("6. Salir")
+        print()
+        
+        opcion = input("Opción (1/2/3/4/5/6): ").strip()
+        if opcion == "6":
+            print("¡Gracias por usar el programa! Hasta luego.")
+            break  # Sale del ciclo y termina el programa
+
+        aleatorio = input("¿Desea generar matrices aleatorias? (s/n): ").strip().lower() == "s"
+        
+        # Para las opciones 4 y 5 se necesita una matriz cuadrada
+        if opcion in ["4", "5"]:
+            while True:
+                try:
+                    n = int(input("Ingrese la dimensión (n x n): "))
+                    if n <= 0:
+                        print("La dimensión debe ser mayor que cero. Intente nuevamente.")
+                        continue
+                    filas = n
+                    columnas = n
+                    break
+                except ValueError:
+                    print("Entrada inválida. Ingrese un número entero.")
         else:
-            print(f"\nIngreso manual de la matriz {nombre}:")
-            return ingresar_matriz(filas, columnas)
-    
-    if opcion == "1":
-        # Opción 1: Conmutativa de la suma
-        A = get_matriz("A")
-        B = get_matriz("B")
-        print("\nMatriz A:\n", A)
-        print("\nMatriz B:\n", B)
-        print("\n¿Se cumple que A + B = B + A? ->", propiedad_conmutativa(A, B))
-    
-    elif opcion == "2":
-        # Opción 2: Asociativa de la suma
-        A = get_matriz("A")
-        B = get_matriz("B")
-        C = get_matriz("C")
-        print("\nMatriz A:\n", A)
-        print("\nMatriz B:\n", B)
-        print("\nMatriz C:\n", C)
-        print("\n¿Se cumple que (A + B) + C = A + (B + C)? ->", propiedad_asociativa_suma(A, B, C))
-    
-    elif opcion == "3":
-        # Opción 3: Distributiva de la multiplicación sobre la suma
-        A = get_matriz("A")
-        B = get_matriz("B")
-        C = get_matriz("C")
-        print("\nMatriz A:\n", A)
-        print("\nMatriz B:\n", B)
-        print("\nMatriz C:\n", C)
-        try:
-            resultado = propiedad_distributiva(A, B, C)
-            print("\n¿Se cumple que A*(B + C) = A*B + A*C? ->", resultado)
-        except ValueError as e:
-            print("\nError:", e)
-    
-    elif opcion == "4":
-        # Opción 4: Inversa de la matriz (A * A^-1 = I)
-        A = get_matriz("A")
-        print("\nMatriz A:\n", A)
-        try:
-            A_inv = inversa_matriz(A)
-            print("\nInversa de A:\n", A_inv)
-            print("\nProducto A * A^-1:\n", A @ A_inv)
-        except np.linalg.LinAlgError:
-            print("\nLa matriz A no es invertible.")
-        except ValueError as ve:
-            print("\nError:", ve)
-    
-    elif opcion == "5":
-        # Opción 5: Matriz identidad (I * A = A)
-        I = matriz_identidad(filas)
-        A = get_matriz("A")
-        print("\nMatriz Identidad I:\n", I)
-        print("\nMatriz A:\n", A)
-        print("\nProducto I * A:\n", I @ A)
-    
-    else:
-        print("\nOpción no válida.")
+            while True:
+                try:
+                    filas = int(input("Número de filas: "))
+                    columnas = int(input("Número de columnas: "))
+                    if filas <= 0 or columnas <= 0:
+                        print("Las dimensiones deben ser mayores que cero. Intente nuevamente.")
+                        continue
+                    break
+                except ValueError:
+                    print("Entrada inválida. Ingrese números enteros.")
+        
+        # Función auxiliar para obtener una matriz (aleatoria o por ingreso manual)
+        def get_matriz(nombre):
+            if aleatorio:
+                print(f"\nGenerando matriz {nombre} aleatoria:")
+                return generar_matriz(filas, columnas)
+            else:
+                print(f"\nIngreso manual de la matriz {nombre}:")
+                return ingresar_matriz(filas, columnas)
+        
+        if opcion == "1":
+            # Opción 1: Conmutativa de la suma
+            A = get_matriz("A")
+            B = get_matriz("B")
+            print("\nMatriz A:\n", A)
+            print("\nMatriz B:\n", B)
+            print("\n¿Se cumple que A + B = B + A? ->", propiedad_conmutativa(A, B))
+        
+        elif opcion == "2":
+            # Opción 2: Asociativa de la suma
+            A = get_matriz("A")
+            B = get_matriz("B")
+            C = get_matriz("C")
+            print("\nMatriz A:\n", A)
+            print("\nMatriz B:\n", B)
+            print("\nMatriz C:\n", C)
+            print("\n¿Se cumple que (A + B) + C = A + (B + C)? ->", propiedad_asociativa_suma(A, B, C))
+        
+        elif opcion == "3":
+            # Opción 3: Distributiva de la multiplicación sobre la suma
+            A = get_matriz("A")
+            B = get_matriz("B")
+            C = get_matriz("C")
+            print("\nMatriz A:\n", A)
+            print("\nMatriz B:\n", B)
+            print("\nMatriz C:\n", C)
+            try:
+                resultado = propiedad_distributiva(A, B, C)
+                print("\n¿Se cumple que A*(B + C) = A*B + A*C? ->", resultado)
+            except ValueError as e:
+                print("\nError:", e)
+        
+        elif opcion == "4":
+            # Opción 4: Inversa de la matriz (A * A^-1 = I)
+            A = get_matriz("A")
+            print("\nMatriz A:\n", A)
+            try:
+                A_inv = inversa_matriz(A)
+                print("\nInversa de A:\n", A_inv)
+                print("\nProducto A * A^-1:\n", A @ A_inv)
+            except np.linalg.LinAlgError:
+                print("\nLa matriz A no es invertible.")
+            except ValueError as ve:
+                print("\nError:", ve)
+        
+        elif opcion == "5":
+            # Opción 5: Matriz identidad (I * A = A)
+            I = matriz_identidad(filas)
+            A = get_matriz("A")
+            print("\nMatriz Identidad I:\n", I)
+            print("\nMatriz A:\n", A)
+            print("\nProducto I * A:\n", I @ A)
+        
+        else:
+            print("\nOpción no válida.")
+        
+        # Preguntar si desea hacer otra operación
+        continuar = input("\n¿Desea realizar otra operación? (s/n): ").strip().lower()
+        if continuar != "s":
+            print("¡Gracias por usar el programa! Hasta luego.")
+            break  # Sale del ciclo y termina el programa
 
 if __name__ == "__main__":
     main()
